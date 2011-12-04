@@ -125,5 +125,77 @@ end</code><br />
 &nbsp;&nbsp;&nbsp;&nbsp;});<br />
 &nbsp;&nbsp;}</code><br />
 [<i>to test</i>:] <b>into the browser</b>: [<i>reload the page</i>] <code>http://localhost:3000/chapter2/myaction</code><br />
-&nbsp;&nbsp;<i>click the link</i>: <code>Call with jQuery</code> [<i>view the image</i>: <code>chap02i08.jpg</code>]</p></li>
+&nbsp;&nbsp;<i>click the link</i>: <code>Call with jQuery</code> [<i>view the image</i>: <code>chap02i08.jpg</code>]</p>
+<p><i>copy the files to Github</i></p></li>
+<li><b>Chapter 3</b>: Introducing (Prototype) JQuery<br />
+<b>into the prompt</b>: <code>rails generate controller chapter3 <u>index</u> get_time repeat reverse</code><br />
+[<i>to test</i>:] <b>into the browser</b>: <code>http://localhost:3000/chapter3/index</code>
+<p><b>into the editor</b>: <i>edit</i> the file <code>project_path\app\views\layouts\application.html.erb</code><br />
+<i>change</i> the 2 first lines with:<br />
+<code>(!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd")<br />
+(html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en")</code><br />
+<i>insert</i> after the line <code>body</code><br />: <code>(h1)Ajax on Rails(/h1)</code><br /></p>
+<p><i>edit</i> the file <code>project_path\app\assets\stylesheets\application.css</code><br />
+<i>replace</i> the whole file with:<br />
+<code>body { margin:25px; padding:0; background-color:#eee; color:#222; font-family:trebuchet; }<br />
+h1 { margin:-25px -25px 20px -25px; padding:15px 0 8px 25px; border-bottom:3px solid #666;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;color:#fff; background-color:#777; font:normal 28pt georgia; text-shadow:black 0px 0px 5px; }<br />
+a { color:#229; }<br />
+.box { width:100px; height:100px; margin-bottom:20px; padding:5px; border:1px solid;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;font-size:.6em; letter-spacing:.1em; text-transform:uppercase; }<br />
+.pink { border-color:#f00; background-color:#fcc; }<br />
+.green { border-color:#090; background-color:#cfc; }<br />
+.hover { padding:1px; border-width:5px; }<br />
+.ul { padding:5px 0 5px 30px; background-color:#ccc; }</code></p>
+<p><i>edit</i> the file <code>project_path\app\controllers\chapter3_controller.rb</code><br />
+<i>insert</i> before the line <code>def get_time</code>:<br />
+<code>sleep 1.second<br />
+render :text => Time.now</code><br />
+<i>insert</i> before the line <code>def repeat</code>:<br />
+<code>render :text => params.inspect</code><br />
+<i>insert</i> before the line <code>def repeat</code>:<br />
+<i>insert</i> before the line <code>def reverse</code>:<br />
+<code>@reversed_text = params[:text_to_reverse].reverse</code></p>
+<p><i>edit</i> the file <code>project_path\app\views\chapter3\index.html.erb</code><br />
+<i>replace</i> the whole file with:<br />
+<code>(%= link_to "Check Time", :action => 'get_time' %)</code><br />
+[<i>to test</i>:] <b>into the browser</b>: <code>http://localhost:3000/chapter3/index</code> [<i>view the image</i>: <code>chap03i02.jpg</code>]</p>
+<p><i>edit</i> the file <code>project_path\app\views\layouts\application.html.erb</code><br />
+<i>insert</i> at the end of the file:<br />
+<code>(script type="text/javascript")<br />
+$(function() {<br />
+&nbsp;&nbsp;$('[data-remote][data-replace]')<br />
+&nbsp;&nbsp;&nbsp;&nbsp;.data('type', 'html')<br />
+&nbsp;&nbsp;&nbsp;&nbsp;.live('ajax:success'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;, function(event, data) { var $this = $(this); $($this.data('replace')).html(data); $this.trigger('ajax:replaced'); }<br />
+&nbsp;&nbsp;&nbsp;&nbsp;);<br />
+});<br />
+(/script)</code><br />
+<i>edit</i> the file <code>project_path\app\assets\stylesheets\application.css</code><br />
+<i>insert</i> at the end of the file:<br />
+#current_time { padding-left:10px; }<br />
+#counter { padding-left:3px; color:red; }<br />
+<i>edit</i> the file <code>project_path\app\views\chapter3\index.html.erb</code><br />
+<i>replace</i> the whole file with:<br />
+<code>(span)(%= link_to "Check Time", { :action => 'get_time' }, :id => "time", :remote => true, :"data-replace" => '#current_time' %)(/span)<br />
+(span): (span)(span id="current_time")Time(/span)(span id="counter")(/span)<br />
+(script type="text/javascript")<br />
+$(function() {<br />
+&nbsp;&nbsp;$('#time').bind('ajax:before', function() { $('#current_time').html('(font color=red)Loading...(/font)'); })<br />
+&nbsp;&nbsp;&nbsp;&nbsp;.bind('ajax:replaced', function(event) { $('#counter').html($('#counter').html()+'.'); });<br />
+});<br />
+(/script)</code><br />
+[<i>to test</i>:] <b>into the browser</b>: <code>http://localhost:3000/chapter3/index</code> [<i>view the image</i>: <code>chap03i03.jpg</code>]</p>
+<p><b>Use jquery-ui</b> to show many interesting visual effects: [control the compability with the jquery version (<code><u>jQuery JavaScript Library v1.7</u></code>)]<br />
+<i>downolad</i> <code>jquery-ui-1.7.3.custom.zip</code> from <code>http://jqueryui.com/download</code><br />
+<i>unzip</i>, <i>copy</i> <code>jquery-ui-1.7.3.custom.min.js</code> to folder <code>project_path\vendor\assets\javascripts</code>,<br />
+and <i>copy</i> <code>jquery-ui-1.7.3.custom.css</code> and the folder <code>images</code> to the foldeer <code>project_path\vendor\assets\stylesheets</code></br />
+<i>edit</i> the file <code>project_path\app\assets\javascripts\application.js</code><br />
+<i>insert</i> <code>//= require jquery-ui</code> after the line <code>//= require jquery</code><br />
+<i>edit</i> the file <code>project_path\app\views\chapter3\index.html.erb</code><br />
+<i>insert</i> before the line <code>.bind('ajax:replaced', function(event) { $('#counter').html($('#counter').html()+'<'); });</code>:<br />
+<code>&nbsp;&nbsp;.bind('ajax:failure', function() { alert("Error: can't call Ajax!"); })<br />
+&nbsp;&nbsp;.bind('ajax:success', function() { $('#counter').effect('pulsate', {color:"#777777"}, 300 ); })<br />
+&nbsp;&nbsp;.bind('ajax:complete', function() { $('#counter').attr("style","font-weight: bold"); })</code></p>
+
 </ul>

@@ -1,5 +1,5 @@
-<!DOCTYPE html>
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
   <title>Ajaxonrails</title>
   <%= stylesheet_link_tag    "application" %>
@@ -7,8 +7,16 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-
-<%= yield %>
-
+  <h1>Ajax on Rails</h1>
+  <%= yield %>
 </body>
 </html>
+<script type="text/javascript">
+$(function() {
+  $('[data-remote][data-replace]')
+    .data('type', 'html')
+    .live('ajax:success'
+      , function(event, data) { var $this = $(this); $($this.data('replace')).html(data); $this.trigger('ajax:replaced'); }
+    );
+});
+</script>
