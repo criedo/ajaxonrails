@@ -1,11 +1,8 @@
+<% javascript 'pages/chapter3.js' %>
 <span><%= link_to "Check Time", { :action => 'get_time' }, :id => "time", :remote => true, :"data-replace" => '#current_time' %></span>
 <span>: </span><span id="current_time">Time</span><span id="counter"></span>
-<script type="text/javascript">
-$(function() {
-  $('#time').bind('ajax:before', function() { $('#current_time').html('<font color=red>Loading...</font>'); })
-    .bind('ajax:failure', function() { alert("Error: can't call Ajax!"); })
-    .bind('ajax:success', function() { $('#counter').effect('pulsate', {color:"#777777"}, 300 ); })
-    .bind('ajax:complete', function() { $('#counter').attr("style","font-weight: bold"); })
-    .bind('ajax:replaced', function(event) { $('#counter').html($('#counter').html()+'<'); });
-});
-</script>
+<%= form_tag('/chapter3/reverse', :method => :get, :id => "submit_reverse", :remote => true) do -%>
+  <span><br /><%=label_tag 'text_to_reverse','Text to reverse:' %> <%= text_field_tag 'text_to_reverse' %></span>
+  <span id='reversed'>&nbsp;</span>
+  <p><%= submit_tag 'Reverse!', :disable_with => 'Please wait...' %></p>
+<% end -%>

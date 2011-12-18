@@ -10,5 +10,6 @@ class Chapter3Controller < ApplicationController
   end
   def reverse
     @reversed_text = params[:text_to_reverse].reverse
+    render :text => " => " + @reversed_text
   end
 end
